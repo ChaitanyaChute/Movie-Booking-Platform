@@ -1,9 +1,10 @@
 import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
-import Userrouter from "./controller/userController";
-import Movierouter from "./controller/MovieController";
+import Userrouter from "./routes/userRoute";
+import Movierouter from "./routes/MovieRoute";
 import { dbconnect } from "./libs/Mongodb";
+import cors from "cors";
 
 dotenv.config();
 
@@ -13,11 +14,17 @@ const PORT = process.env.PORT || "3000";
 
 const app = express();
 app.use(express.json());
+app.use(cors({
+  origin:"http://localhost:5173",
+  credentials:true
+}))
 
 
-// Route mounting
+
 app.use("/users", Userrouter);
 app.use("/movies", Movierouter);
+
+
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
