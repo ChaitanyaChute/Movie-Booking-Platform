@@ -1,4 +1,3 @@
-import React from 'react'
 import { Routes  , BrowserRouter, Route } from 'react-router'
 import HomePage from './pages/HomePage'
 import NavBar from './components/NavBar'
@@ -10,7 +9,8 @@ import SeatLayout from './pages/SeatLayout'
 import Bookings from './pages/Bookings'
 import Favorite from './pages/Favorite'
 import  {  Toaster } from 'react-hot-toast'
-import AuthPage from './pages/AuthPage'
+import LoginPage from './pages/LoginPage'
+import Signuppage from './pages/SignupPage'
 
 
 const App = () => {
@@ -29,7 +29,8 @@ const App = () => {
         <Route path='/movies/:id/:date' element={<SeatLayout/>}/>
         <Route path='/bookings' element={<Bookings/>}/>
         <Route path='/favorite' element={<Favorite/>}/>
-        <Route path="/auth" element={<AuthPage/>} />
+        <Route path="/auth" element={<LoginPage/>} />
+        <Route path="/auth/s" element={<Signuppage/>} />
         <Route path='*' element={<ErrorPage />} />
       </Routes>
       
