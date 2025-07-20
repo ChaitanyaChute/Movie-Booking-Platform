@@ -8,7 +8,8 @@ const Movierouter = express.Router();
 Movierouter.post("/upload" ,async(req,res)=>{
     const {moviename , overview , poster_path ,backdrop_path , genres , release_date } = req.body;
 
-    let poster_url ;
+    try {
+        let poster_url ;
     let backdrop_url ;
 
     if(poster_path){
@@ -38,6 +39,12 @@ Movierouter.post("/upload" ,async(req,res)=>{
         message:"Movie has been added sucessfully "
 
     })
+    } catch (error) {
+        res.json({error:"there is error in /movies/upload:"} )
+         console.error("There is error  in  /movies/Poster", error);
+    }
+
+    
 })
 
 
@@ -46,7 +53,7 @@ Movierouter.get("/Poster", async (req, res) => {
         const backdrops = await movieModel.find({}, { backdrop_path: 1, _id: 0 });
         res.status(200).json(backdrops); 
     } catch (err) {
-        console.error("Error fetching backdrops:", err);
+        console.error("There is error  in  /movies/Poster", err);
         res.status(500).json({ error: "Failed to fetch backdrop paths" });
     }
 });
@@ -58,7 +65,7 @@ Movierouter.get("/detail" ,async(req,res)=>{
         res.json(data)
     } catch (error) {
         res.json({
-            message:"There is error " , 
+            message:"There is error  in  /movies/detail" , 
             error 
         })
     }

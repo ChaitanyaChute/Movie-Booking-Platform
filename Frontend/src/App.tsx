@@ -11,6 +11,7 @@ import Favorite from './pages/Favorite'
 import  {  Toaster } from 'react-hot-toast'
 import LoginPage from './pages/LoginPage'
 import Signuppage from './pages/SignupPage'
+import AdminPage from './pages/AdminPage'
 
 
 const App = () => {
@@ -32,6 +33,7 @@ const App = () => {
         <Route path="/auth" element={<LoginPage/>} />
         <Route path="/auth/s" element={<Signuppage/>} />
         <Route path='*' element={<ErrorPage />} />
+        <Route path="/admin" element={<AdminPage />} />
       </Routes>
       
     </BrowserRouter>
