@@ -5,6 +5,7 @@ import Userrouter from "./routes/userRoute";
 import Movierouter from "./routes/MovieRoute";
 import { dbconnect } from "./libs/Mongodb";
 import cors from "cors";
+import castRouter from "./routes/castRoute";
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ app.use(cors({
 
 app.use("/users", Userrouter);
 app.use("/movies", Movierouter);
+app.use("/cast", castRouter);
 
 
 

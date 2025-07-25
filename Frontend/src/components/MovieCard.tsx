@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import {useNavigate } from "react-router";
 
 interface MovieInterface {
   moviename:string,
@@ -22,8 +23,12 @@ const MovieCard = () => {
     FetchingMovie();
 
   },[])
+   
+   const navigate = useNavigate();
 
-
+   const openMovie = () => {
+    navigate(`/movies/:id`);
+  };
 
   return (<> 
     {Movie?.length ===0 ? <div>Movies are loading....</div>:Movie?.map((Movie)=>(
@@ -31,15 +36,14 @@ const MovieCard = () => {
       <div className='fixed top-4 right-2 left-2 '>
          <img
             src={Movie?.backdrop_path}
-            alt={Movie?.moviename}
             style={{ width: "400px", height: "auto" }}
           />
       </div>
-      <div className="fixed top-40 left-2 right-2">
+      <div className="fixed top-60 left-2 right-2 text-xl">
         <b>{Movie?.moviename}</b>
       </div>
-      <div>
-        <p></p>
+      <div className="left-2 right-2 justify-center align-center">
+        <button className="bg-red-800 rounded-2xl cursor-pointer" onClick={openMovie}>BUY TICKETS</button>
       </div>
 
     </div>
