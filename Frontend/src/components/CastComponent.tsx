@@ -14,11 +14,9 @@ const CastComponent = () => {
         const res = await fetch("http://localhost:3000/cast/details");
         const data: CastInterface[] = await res.json();
 
-        // Shuffle the cast list
         const shuffled = data.sort(() => 0.5 - Math.random());
 
-        // Select 5 or 6 random items
-        const randomCount = Math.floor(Math.random() * 2) + 8; // 5 or 6
+        const randomCount = Math.floor(Math.random() * 2) + 8;
         const selected = shuffled.slice(0, randomCount);
 
         setCast(selected);

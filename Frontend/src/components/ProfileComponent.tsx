@@ -14,7 +14,7 @@ const ProfileComponent: React.FC<logoutfuncprops>  = ({ logoutfunc }) => {
   const handleLogout = async() => {
     console.log('Logging out...');
 
-    //await localStorage.removeItem(token);
+    await localStorage.removeItem("token");
     toast.success("Logout Sucessfully")
     logoutfunc();
     navigate('/');

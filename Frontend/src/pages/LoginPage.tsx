@@ -1,9 +1,19 @@
-import axios from 'axios';
-import { useRef } from 'react';
-import toast from 'react-hot-toast';
-import { Link, useNavigate } from 'react-router-dom'; 
+import axios from "axios";
+import React, { useRef } from "react";
+import toast from "react-hot-toast";
+import { Link, useNavigate } from "react-router-dom";
 
-function LoginPage() {
+interface LoginFuncProp {
+  LoginFunc: () => void;
+}
+
+interface LoginResponse {
+  token: string;
+  username: string;
+  password: string;
+}
+
+const LoginPage: React.FC<LoginFuncProp> = ({ LoginFunc }) => {
   const navigate = useNavigate();
 
   const usernameRef = useRef<HTMLInputElement>();
@@ -19,13 +29,25 @@ function LoginPage() {
     }
 
     try {
-      await axios.post(`http://localhost:3000/users/login`, {
-        username,
-        password,
-      });
+      const reponse = await axios.post<LoginResponse>(
+        `http://localhost:3000/users/login`,
+        {
+          username,
+          password,
+        }
+      );
+
+      const token = reponse.data.token;
+      localStorage.setItem("token", token);
+
+      try {
+        LoginFunc();
+      } catch (e) {
+        console.error("Error in LoginFunc:", e);
+      }
 
       toast.success("Logged in successfully!");
-      navigate('/');
+      navigate("/");
     } catch (error) {
       toast.error("Login failed. Please check your credentials.");
     }
@@ -34,9 +56,10 @@ function LoginPage() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-[#0F0F10] px-4">
       <div className="bg-[#1A1A1C] p-8 rounded-lg shadow-xl w-full max-w-sm border border-[#2a2a2b]">
-        <h2 className="text-3xl font-bold text-white mb-6 text-center">Welcome Back</h2>
+        <h2 className="text-3xl font-bold text-white mb-6 text-center">
+          Welcome Back
+        </h2>
 
-        {/* Username */}
         <div className="mb-4">
           <label className="block text-gray-300 mb-2 text-sm">Username</label>
           <input
@@ -65,7 +88,7 @@ function LoginPage() {
         </button>
 
         <div className="mt-6 text-center text-sm text-gray-400">
-          Don't have an account?{' '}
+          Don't have an account?{" "}
           <Link
             to="/auth/s"
             className="text-[#EF3A55] font-semibold hover:underline"
@@ -76,6 +99,6 @@ function LoginPage() {
       </div>
     </div>
   );
-}
+};
 
 export default LoginPage;

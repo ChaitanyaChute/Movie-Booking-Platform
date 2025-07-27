@@ -63,7 +63,7 @@ function ytEmbed() {
 
     <div className="flex flex-col justify-start mt-43">
       
-      <p className="text-sm text-red-400 font-semibold mb-2 uppercase">
+      <p className="text-sm text-[#EF3A55] font-semibold mb-2 uppercase">
         {movieData.original_language}
       </p>
 
@@ -80,7 +80,7 @@ function ytEmbed() {
         {new Date(movieData.release_date).getFullYear()}
       </div>
 
-      {/* Buttons */}
+      
       <div className="flex items-center gap-4 mb-8 flex-wrap">
         <button
           className="bg-[#1c1c2a] cursor-pointer text-white font-medium py-2 px-4 rounded-md flex items-center gap-2 transition"
@@ -89,7 +89,7 @@ function ytEmbed() {
           <CirclePlay size={20} />
           Watch Trailer
         </button>
-        <button className="bg-red-400 cursor-pointer  text-white font-medium py-2 px-5 rounded-md transition">
+        <button className="bg-[#EF3A55] cursor-pointer  text-white font-medium py-2 px-5 rounded-md transition">
           Buy Tickets
         </button>
         
