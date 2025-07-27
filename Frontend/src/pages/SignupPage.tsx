@@ -1,69 +1,83 @@
 import axios from "axios";
 import { useRef } from "react";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router";
-import { Link} from "react-router";
-
+import { useNavigate } from "react-router-dom"; 
+import { Link } from "react-router-dom"; 
 
 function Signuppage() {
-    const Navigate = useNavigate()
+  const navigate = useNavigate();
 
-    const usernameRef = useRef<HTMLInputElement>();
-    const passwordRef = useRef<HTMLInputElement>();
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
 
-    async function Signup() {
-        const username = usernameRef.current.value;
-        const password = passwordRef.current.value;
-        
-        await axios.post(`http://localhost:3000/users/signup` ,{
-            username,
-            password
-        })
+  async function Signup() {
+    const username = usernameRef.current?.value;
+    const password = passwordRef.current?.value;
 
-        toast.success("signed up")
-
-        Navigate("/auth")
-      
-        
+    if (!username || !password) {
+      toast.error("Both fields are required");
+      return;
     }
 
+    try {
+      await axios.post(`http://localhost:3000/users/signup`, {
+        username,
+        password,
+      });
 
-  return (<>
-    <div className="flex items-center justify-center min-h-screen bg-black">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm">
-        <h2 className="text-2xl font-semibold mb-6 text-black text-center">Create Account</h2>
-        
-          <div className="mb-4">
-            <label className="block text-gray-700 mb-2">Username:</label>
-            <input
-              ref={usernameRef}
-              type="email"
-              name="email"
-              className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
-            />
-          </div>
+      toast.success("Signed up successfully!");
+      navigate("/auth");
+    } catch (err) {
+      toast.error("Signup failed. Try again.");
+    }
+  }
 
-          <div className="mb-6">
-            <label className="block text-gray-700 mb-2">Password:</label>
-            <input
-              ref={passwordRef}
-              type="password"
-              name="password"
-              className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
-            />
-          </div>
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-[#0F0F10] px-4">
+      <div className="bg-[#1A1A1C] p-8 rounded-lg shadow-xl w-full max-w-sm border border-[#2a2a2b]">
+        <h2 className="text-3xl font-bold text-white mb-6 text-center">Create Account</h2>
 
-          <button
-            onClick={Signup}
-            className="w-full bg-black text-white py-2 px-4 rounded hover:bg-gray-800 transition-colors cursor-pointer"
+        <div className="mb-4">
+          <label className="block text-gray-300 mb-2 text-sm">Username</label>
+          <input
+            ref={usernameRef}
+            type="text"
+            name="username"
+            placeholder="Enter your username"
+            className="w-full px-4 py-2 bg-[#0F0F10] text-white border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-[#EF3A55] transition"
+          />
+        </div>
+
+        <div className="mb-6">
+          <label className="block text-gray-300 mb-2 text-sm">Password</label>
+          <input
+            ref={passwordRef}
+            type="password"
+            name="password"
+            placeholder="••••••••"
+            className="w-full px-4 py-2 bg-[#0F0F10] text-white border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-[#EF3A55] transition"
+          />
+        </div>
+
+        <button
+          onClick={Signup}
+          className="w-full bg-[#EF3A55] hover:bg-[#d72d48] text-white py-2 px-4 rounded transition-colors"
+        >
+          Sign Up
+        </button>
+
+        <div className="mt-6 text-center text-sm text-gray-400">
+          Already have an account?{" "}
+          <Link
+            to="/auth"
+            className="text-[#EF3A55] font-semibold hover:underline"
           >
-           Signup
-          </button>
-        
-        <div className=' mt-5 text-black text-center'>Already have a account  <div className='text-blue-900 font-bold underline'><Link to="/auth" className='text-blue' >Login</Link> </div></div>
+            Log in
+          </Link>
+        </div>
       </div>
     </div>
-  </>);
+  );
 }
 
 export default Signuppage;

@@ -1,63 +1,78 @@
-
 import axios from 'axios';
 import { useRef } from 'react';
 import toast from 'react-hot-toast';
-import { Link, useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router-dom'; 
 
 function LoginPage() {
-  const Navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const usernameRef = useRef<HTMLInputElement>()
-  const passwordRef = useRef<HTMLInputElement>()
+  const usernameRef = useRef<HTMLInputElement>();
+  const passwordRef = useRef<HTMLInputElement>();
 
-  async function Login(){
+  async function Login() {
+    const username = usernameRef.current?.value;
+    const password = passwordRef.current?.value;
 
-      const username = usernameRef.current.value;
-      const password = passwordRef.current.value;
+    if (!username || !password) {
+      toast.error("Please enter both username and password");
+      return;
+    }
 
-      await axios.post(`http://localhost:3000/users/login`,{
+    try {
+      await axios.post(`http://localhost:3000/users/login`, {
         username,
-        password
+        password,
+      });
 
-      })
-
-      toast.success("Logged-In Successfully")
-
-      Navigate("/")
+      toast.success("Logged in successfully!");
+      navigate('/');
+    } catch (error) {
+      toast.error("Login failed. Please check your credentials.");
+    }
   }
 
-
-
   return (
-    <div className="flex items-center justify-center min-h-screen bg-black">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm">
-        <h2 className="text-2xl font-semibold mb-6 text-black text-center">Login</h2>
-        
-          <div className="mb-4">
-            <label className="block text-gray-700 mb-2">Username:</label>
-            <input
-              ref={usernameRef}
-              className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-black "
-            />
-          </div>
+    <div className="flex items-center justify-center min-h-screen bg-[#0F0F10] px-4">
+      <div className="bg-[#1A1A1C] p-8 rounded-lg shadow-xl w-full max-w-sm border border-[#2a2a2b]">
+        <h2 className="text-3xl font-bold text-white mb-6 text-center">Welcome Back</h2>
 
-          <div className="mb-6">
-            <label className="block text-gray-700 mb-2">Password:</label>
-            <input
-              ref={passwordRef}
-              type="password"
-              name="password"
-              className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
-            />
-          </div>
-          <button
-            onClick={Login}
-            className="w-full bg-black text-white py-2 px-4 rounded hover:bg-gray-800 transition-colors cursor-pointer"
+        {/* Username */}
+        <div className="mb-4">
+          <label className="block text-gray-300 mb-2 text-sm">Username</label>
+          <input
+            ref={usernameRef}
+            type="text"
+            className="w-full px-4 py-2 bg-[#0F0F10] text-white border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-[#EF3A55] transition"
+            placeholder="Enter your username"
+          />
+        </div>
+
+        <div className="mb-6">
+          <label className="block text-gray-300 mb-2 text-sm">Password</label>
+          <input
+            ref={passwordRef}
+            type="password"
+            className="w-full px-4 py-2 bg-[#0F0F10] text-white border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-[#EF3A55] transition"
+            placeholder="••••••••"
+          />
+        </div>
+
+        <button
+          onClick={Login}
+          className="w-full bg-[#EF3A55] hover:bg-[#d72d48] text-white py-2 px-4 rounded transition-colors"
+        >
+          Login
+        </button>
+
+        <div className="mt-6 text-center text-sm text-gray-400">
+          Don't have an account?{' '}
+          <Link
+            to="/auth/s"
+            className="text-[#EF3A55] font-semibold hover:underline"
           >
-            Login
-          </button>
-      
-        <div className=' mt-5 text-black text-center'>Don't Have a account . Create one <div className='text-blue-900 font-bold underline'><Link to="/auth/s" className='text-blue' >Signup</Link> </div></div>
+            Create one
+          </Link>
+        </div>
       </div>
     </div>
   );
