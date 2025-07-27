@@ -1,8 +1,12 @@
 import React from 'react'
+import CastComponent from '../components/castComponent'
 
 const ErrorPage = () => {
   return (
-    <div>ErrorPage</div>
+    <div>
+      <p>Error Page</p>
+      <CastComponent />
+    </div>
   )
 }
 

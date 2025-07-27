@@ -10,6 +10,8 @@ const AdminPage = () => {
   const BackdropRef = useRef<HTMLInputElement>()
   const dateRef = useRef<HTMLInputElement>()
   const genreRef = useRef<HTMLInputElement>()
+  const languageRef = useRef<HTMLInputElement>()
+  const durationRef = useRef<HTMLInputElement>()
 
   const Navigate = useNavigate();
 
@@ -21,14 +23,8 @@ const AdminPage = () => {
     const Backdrop = BackdropRef.current.value;
     const date = dateRef.current.value;
     const genre = genreRef.current.value;
-
-    console.log("moviename:",MovieName);
-    console.log("overview:",Overview);
-    console.log("Poster:",poster);
-    console.log("Backdrop:",Backdrop);
-    console.log("Date:",date);
-    console.log("Genre:",genre);
-    
+    const duration = durationRef.current.value;                  
+    const language = languageRef.current.value;                  
 
     const response = await axios.post(`http://localhost:3000/movies/upload`,{
         moviename : MovieName,
@@ -36,7 +32,9 @@ const AdminPage = () => {
         poster_path: poster,
         backdrop_path:Backdrop,
         release_date:date,
-        genres:genre
+        genres:genre,
+        original_language:language,
+        duration:duration
     })
      console.log("Response:", response.data);
 
@@ -107,6 +105,22 @@ const AdminPage = () => {
       className="px-3 py-2 text-base rounded-md border border-[#444] bg-[#292929] text-gray-100 outline-none"
     />
   </div>
+<div className="flex flex-col gap-1">
+  <label className="font-semibold text-sm text-gray-300">Duration</label>
+  <input 
+  ref={durationRef}
+   type="time" 
+   className="px-3 py-2 text-base rounded-md border border-[#444] bg-[#292929] text-gray-100 outline-none">
+   </input>
+</div>
+<div className="flex flex-col gap-1">
+  <label className="font-semibold text-sm text-gray-300">language</label>
+  <input 
+  ref={languageRef}
+   type="text" 
+   className="px-3 py-2 text-base rounded-md border border-[#444] bg-[#292929] text-gray-100 outline-none">
+   </input>
+</div>
 </form>
 
 

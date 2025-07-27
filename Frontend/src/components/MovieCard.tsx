@@ -1,27 +1,32 @@
 import { useEffect, useState } from "react"
-import {useNavigate } from "react-router";
+import {useNavigate, useParams } from "react-router";
 
 interface MovieInterface {
   moviename:string,
   overview:string,
   poster_path:string,
   backdrop_path:string,
-  genres:string[]
+  genres:string[],
+  release_date:string,
+  duration:string,
+  original_language:string,
+  
 }
 
 const MovieCard = () => {
+  
 
   const[Movie,setMovie]=useState<MovieInterface[] | null>([]);
 
   useEffect(()=>{
     const FetchingMovie = async()=>{
-      const data = await fetch("http://localhost:3000/movies/detail");
+      const data = await fetch("http://localhost:3000/movies/poster");
       const res:MovieInterface[] = await data.json();
       setMovie(res);
       
+      
     }
     FetchingMovie();
-
   },[])
    
    const navigate = useNavigate();
@@ -35,7 +40,7 @@ const MovieCard = () => {
     <div className='rounded-xl h-85 w-60 backdrop-blur bg-gray-800 '>
       <div className='fixed top-4 right-2 left-2 '>
          <img
-            src={Movie?.backdrop_path}
+            src={Movie?.poster_path}
             style={{ width: "400px", height: "auto" }}
           />
       </div>
