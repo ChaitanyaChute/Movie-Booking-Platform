@@ -10,8 +10,6 @@ const images = [
   "./src/assets/carousal-3.jpg",
   "./src/assets/carousal-4.jpg",
   "./src/assets/carousal-5.jpg",
-  "./src/assets/carousal-6.jpg",
-  "./src/assets/carousal-7.jpg",
 ];
 
 
