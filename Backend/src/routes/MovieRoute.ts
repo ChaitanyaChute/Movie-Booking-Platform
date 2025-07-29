@@ -5,7 +5,7 @@ import cloudinary from "../libs/cloudinary";
 
 const Movierouter = express.Router();
 
-Movierouter.post("/upload" ,async(req,res)=>{
+Movierouter.post("/upload"  ,async(req,res)=>{
     const {moviename , overview , poster_path ,backdrop_path , genres , release_date , original_language , duration} = req.body;
 
     try {
