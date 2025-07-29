@@ -50,7 +50,7 @@ function ytEmbed() {
 
 
   return (
-  <div className="overflow-y-auto max-h-screen py-12 bg-[#0d0c11] text-white ">
+  <div className="min-h-screen py-12 bg-[#0d0c11] text-white">
   <div className="max-w-6xl px-8 ml-23 flex flex-row gap-10">
     
     <div className="flex-shrink-0 mt-40 ml-0">

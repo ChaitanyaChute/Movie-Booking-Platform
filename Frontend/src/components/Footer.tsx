@@ -1,3 +1,7 @@
+import appStoreImg from "../assets/appStore.svg";
+import googlePlayImg from "../assets/googlePlay.svg";
+
+
 const Footer = () => {
   return (
     <footer className=" text-white py-12 px-6 md:px-16 lg:px-32 font-sans">
@@ -13,14 +17,14 @@ const Footer = () => {
           <div className="flex space-x-4 mt-6">
             <a href="#">
               <img
-                src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
+                src={googlePlayImg}
                 alt="Get it on Google Play"
                 className="h-12"
               />
             </a>
             <a href="#">
               <img
-                src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
+                src={appStoreImg}
                 alt="Download on the App Store"
                 className="h-12"
               />

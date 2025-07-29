@@ -1,6 +1,19 @@
 import { Link } from "react-router"
 import MovieCard from "../components/MovieCard"
 import { ArrowRight } from "lucide-react"
+import { Carousel } from 'react-responsive-carousel';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+
+const images = [
+  "./src/assets/carousal-1.jpg",
+  "./src/assets/carousal-2.jpg",
+  "./src/assets/carousal-3.jpg",
+  "./src/assets/carousal-4.jpg",
+  "./src/assets/carousal-5.jpg",
+  "./src/assets/carousal-6.jpg",
+  "./src/assets/carousal-7.jpg",
+];
+
 
 
 
@@ -8,10 +21,27 @@ const HomePage = () => {
 
 
   return (<>
-    
-    <div>
-      <img src='./src/assets/backgroundImage.png' />
+  <div className="w-full h-[768px] overflow-hidden">
+      <Carousel
+        autoPlay
+        infiniteLoop
+        showThumbs={false}
+        showStatus={false}
+        interval={4000}
+        className="h-full"
+      >
+        {images.map((src, index) => (
+          <div key={index} className="h-full">
+            <img
+              src={src}
+              alt={`Slide ${index}`}
+              className="w-full h-full object-cover"
+            />
+          </div>
+        ))}
+      </Carousel>
     </div>
+
     <div className="justify-between flex mt-10 mb-5 ml-20 mr-30">
       <p className="text-2xl font-bold ">Now Showing</p>
       <div className="flex ">
