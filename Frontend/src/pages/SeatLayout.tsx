@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import screenImage from "../assets/screenImage.svg";
+import { toast } from "react-hot-toast"; 
 
 const rows: string[] = ["A", "B", "C", "D", "E", "F", "G"];
 const seatsPerRow: Record<string, number> = {
@@ -10,24 +11,35 @@ const seatsPerRow: Record<string, number> = {
   E: 18,
   F: 18,
   G: 18,
-  H:15
+  H: 15,
 };
-
 
 interface SeatProps {
   id: string;
   isTaken: boolean;
+  isSelected: boolean;
   onClick: (id: string) => void;
 }
 
-const Seat: React.FC<SeatProps> = ({ id, isTaken, onClick }) => {
+const Seat: React.FC<SeatProps> = ({ id, isTaken, isSelected, onClick }) => {
+  let seatClass =
+    "w-6 h-6 border border-[#EF3A55] rounded-md mx-[2px] my-[3px] transition-colors duration-200 text-2xl font-bold cursor-pointer";
+
+  if (isTaken) {
+    seatClass += " bg-[#EF3A55] cursor-not-allowed";
+  } else if (isSelected) {
+    seatClass += " bg-[#EF3A55]";
+  } else {
+    seatClass += " hover:bg-[#EF3A55]";
+  }
+
   return (
     <div
-      className={`w-6 h-6 border border-[#EF3A55] rounded-md mx-[2px] my-[3px] transition-colors duration-200 text-2xl font-bold cursor-pointer ${
-        isTaken ? "bg-[#EF3A55]" : "hover:bg-[#EF3A55]"
-      }`}
+      className={seatClass}
       title={id}
-      onClick={() => onClick(id)}
+      onClick={() => {
+        if (!isTaken) onClick(id);
+      }}
     ></div>
   );
 };
@@ -35,10 +47,16 @@ const Seat: React.FC<SeatProps> = ({ id, isTaken, onClick }) => {
 interface SeatRowProps {
   row: string;
   takenSeats: string[];
+  selectedSeats: string[];
   onSeatClick: (id: string) => void;
 }
 
-const SeatRow: React.FC<SeatRowProps> = ({ row, takenSeats, onSeatClick }) => {
+const SeatRow: React.FC<SeatRowProps> = ({
+  row,
+  takenSeats,
+  selectedSeats,
+  onSeatClick,
+}) => {
   const seatCount: number = seatsPerRow[row];
   const seats: JSX.Element[] = [];
 
@@ -49,9 +67,16 @@ const SeatRow: React.FC<SeatRowProps> = ({ row, takenSeats, onSeatClick }) => {
 
     const seatId = `${row}${i}`;
     const isTaken = takenSeats.includes(seatId);
+    const isSelected = selectedSeats.includes(seatId);
 
     seats.push(
-      <Seat key={seatId} id={seatId} isTaken={isTaken} onClick={onSeatClick} />
+      <Seat
+        key={seatId}
+        id={seatId}
+        isTaken={isTaken}
+        isSelected={isSelected}
+        onClick={onSeatClick}
+      />
     );
   }
 
@@ -64,18 +89,35 @@ const SeatRow: React.FC<SeatRowProps> = ({ row, takenSeats, onSeatClick }) => {
 };
 
 const SeatLayout: React.FC = () => {
-  const [takenSeats, setTakenSeats] = useState<string[]>([]);
+  const [takenSeats] = useState<string[]>([]);
+  const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
 
   const handleSeatClick = (seatId: string) => {
-    setTakenSeats((prev) =>
-      prev.includes(seatId)
-        ? prev.filter((id) => id !== seatId)
-        : [...prev, seatId]
-    );
-  };
+  if (takenSeats.includes(seatId)) return;
+
+  setSelectedSeats((prev) => {
+    const isSelected = prev.includes(seatId);
+
+    if (!isSelected && prev.length >= 4) {
+      toast.error("You can only select up to 4 seats");
+      return prev;
+    }
+
+    const updated = isSelected
+      ? prev.filter((id) => id !== seatId) 
+      : [...prev, seatId]; 
+
+    if (!isSelected) {
+      toast.success(`You have selected seat ${seatId}`);
+    }
+
+    return updated;
+  });
+};
+
 
   return (
-    <div className="mt-50 min-h-screen  text-white flex flex-col items-center py-10 px-4">
+    <div className="mt-50 min-h-screen text-white flex flex-col items-center py-10 px-4">
       <div className="mb-4">
         <img src={screenImage} alt="Screen" />
       </div>
@@ -85,6 +127,7 @@ const SeatLayout: React.FC = () => {
             key={row}
             row={row}
             takenSeats={takenSeats}
+            selectedSeats={selectedSeats}
             onSeatClick={handleSeatClick}
           />
         ))}
