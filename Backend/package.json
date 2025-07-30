@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "npx tsc && node ./dist/index.js",
-    "test": "npx tsc && node ./dist/test.js"
+    "start": "node ./dist/index.js",
+    "build":"tsc",
+    "dev": "npx tsc && node ./dist/index.js"
+
   },
   "author": "",
   "license": "ISC",
@@ -20,7 +22,9 @@
     "dotenv": "^17.2.0",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.16.3",
-    "typescript": "^5.8.3"
+    "mongoose": "^8.16.3"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.2"
   }
 }

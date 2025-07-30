@@ -3,7 +3,7 @@ import userModel from "../models/userModel";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
-import AuthMiddleware from "../middleware/auth";
+
 
 const Userrouter = express.Router();
 
