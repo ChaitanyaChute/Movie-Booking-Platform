@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import cloudinary from "../libs/cloudinary";
-import CastModel from "../models/castModel";
-import movieModel from "../models/movieModel";
+import CastModel from "../models/castmodel";
+import movieModel from "../models/moviemodel";
 
 
 const castRouter = express.Router();

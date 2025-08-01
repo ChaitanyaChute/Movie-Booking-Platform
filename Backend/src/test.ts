@@ -1,5 +1,5 @@
 import express from "express";
-import movieModel from "./models/movieModel";
+import movieModel from "./models/moviemodel";
 import cloudinary from "./libs/cloudinary";
 import { config } from "dotenv";
 import mongoose from "mongoose";
