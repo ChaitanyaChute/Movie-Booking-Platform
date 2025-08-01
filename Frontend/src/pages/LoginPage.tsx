@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 
 interface LoginFuncProp {
-  LoginFunc: () => void;
+  LoginFunc: (username: string) => void; 
 }
 
 interface LoginResponse {
@@ -16,8 +16,8 @@ interface LoginResponse {
 const LoginPage: React.FC<LoginFuncProp> = ({ LoginFunc }) => {
   const navigate = useNavigate();
 
-  const usernameRef = useRef<HTMLInputElement>();
-  const passwordRef = useRef<HTMLInputElement>();
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
 
   async function Login() {
     const username = usernameRef.current?.value;
@@ -29,7 +29,7 @@ const LoginPage: React.FC<LoginFuncProp> = ({ LoginFunc }) => {
     }
 
     try {
-      const reponse = await axios.post<LoginResponse>(
+      const response = await axios.post<LoginResponse>(
         `http://localhost:3000/users/login`,
         {
           username,
@@ -37,11 +37,11 @@ const LoginPage: React.FC<LoginFuncProp> = ({ LoginFunc }) => {
         }
       );
 
-      const token = reponse.data.token;
+      const token = response.data.token;
       localStorage.setItem("token", token);
 
       try {
-        LoginFunc();
+        LoginFunc(username); // pass username here ✅
       } catch (e) {
         console.error("Error in LoginFunc:", e);
       }
@@ -88,7 +88,7 @@ const LoginPage: React.FC<LoginFuncProp> = ({ LoginFunc }) => {
         </button>
 
         <div className="mt-6 text-center text-sm text-gray-400">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <Link
             to="/auth/s"
             className="text-[#EF3A55] font-semibold hover:underline"

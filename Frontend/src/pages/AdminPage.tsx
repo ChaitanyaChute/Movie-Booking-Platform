@@ -4,27 +4,27 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
 
 const AdminPage = () => {
-  const movienameRef = useRef<HTMLInputElement>()
-  const overviewRef = useRef<HTMLInputElement>()
-  const posterRef = useRef<HTMLInputElement>()
-  const BackdropRef = useRef<HTMLInputElement>()
-  const dateRef = useRef<HTMLInputElement>()
-  const genreRef = useRef<HTMLInputElement>()
-  const languageRef = useRef<HTMLInputElement>()
-  const durationRef = useRef<HTMLInputElement>()
+  const movienameRef = useRef<HTMLInputElement>(null)
+  const overviewRef = useRef<HTMLInputElement>(null)
+  const posterRef = useRef<HTMLInputElement>(null)
+  const BackdropRef = useRef<HTMLInputElement>(null)
+  const dateRef = useRef<HTMLInputElement>(null)
+  const genreRef = useRef<HTMLInputElement>(null)
+  const languageRef = useRef<HTMLInputElement>(null)
+  const durationRef = useRef<HTMLInputElement>(null)
 
   const Navigate = useNavigate();
 
 
   async function AddMovie(){
-    const MovieName = movienameRef.current.value;
-    const Overview = overviewRef.current.value;
-    const poster = posterRef.current.value;
-    const Backdrop = BackdropRef.current.value;
-    const date = dateRef.current.value;
-    const genre = genreRef.current.value;
-    const duration = durationRef.current.value;                  
-    const language = languageRef.current.value;                  
+    const MovieName = movienameRef.current!.value;
+    const Overview = overviewRef.current!.value;
+    const poster = posterRef.current!.value;
+    const Backdrop = BackdropRef.current!.value;
+    const date = dateRef.current!.value;
+    const genre = genreRef.current!.value;
+    const duration = durationRef.current!.value;                  
+    const language = languageRef.current!.value;                  
 
     const response = await axios.post(`http://localhost:3000/movies/upload`,{
         moviename : MovieName,

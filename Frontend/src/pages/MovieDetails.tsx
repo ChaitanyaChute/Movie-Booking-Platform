@@ -2,7 +2,7 @@ import { CirclePlay } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate, useParams } from 'react-router-dom';
-import CastComponent from '../components/castComponent';
+import CastComponent from '../components/CastComponent';
 
 
 
@@ -20,7 +20,7 @@ interface MovieInterface {
 export const MovieDetails = () => {
 
   const navigate = useNavigate();
-  const { id ,date } = useParams();
+  const { id } = useParams();
   const [movieData, setData] = useState<MovieInterface | null>(null);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
