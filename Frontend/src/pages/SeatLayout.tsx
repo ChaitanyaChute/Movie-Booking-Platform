@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, type JSX } from "react";
 import screenImage from "../assets/screenImage.svg";
 import { toast } from "react-hot-toast"; 
 
