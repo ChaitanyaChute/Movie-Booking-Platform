@@ -11,7 +11,7 @@ const CastComponent = () => {
   useEffect(() => {
     const castFetch = async () => {
       try {
-        const res = await fetch("${process.env.REACT_APP_BACKEND_URL}/cast/details");
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/cast/details`);
         const data: CastInterface[] = await res.json();
 
         const shuffled = data.sort(() => 0.5 - Math.random());

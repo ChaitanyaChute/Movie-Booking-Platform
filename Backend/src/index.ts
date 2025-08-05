@@ -13,12 +13,24 @@ dbconnect();
 
 const PORT = process.env.PORT || "3000";
 
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  process.env.FRONTEND_PROD_URL,
+];
+
 const app = express();
 app.use(express.json());
 app.use(cors({
-  origin:"http://localhost:5173",
-  credentials:true
-}))
+  origin: function(origin, callback) {
+    if (!origin) return callback(null, true); 
+    if (allowedOrigins.indexOf(origin) === -1) {
+      return callback(new Error("CORS policy does not allow this origin"), false);
+    }
+    return callback(null, true);
+  },
+  credentials: true,
+}));
+
 
 
 

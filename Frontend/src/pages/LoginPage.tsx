@@ -30,7 +30,7 @@ const LoginPage: React.FC<LoginFuncProp> = ({ LoginFunc }) => {
 
     try {
       const response = await axios.post<LoginResponse>(
-        `${process.env.REACT_APP_BACKEND_URL}/users/login`,
+        `${import.meta.env.VITE_BACKEND_URL}/users/login`,
         {
           username,
           password,
@@ -41,7 +41,7 @@ const LoginPage: React.FC<LoginFuncProp> = ({ LoginFunc }) => {
       localStorage.setItem("token", token);
 
       try {
-        LoginFunc(username); // pass username here ✅
+        LoginFunc(username); 
       } catch (e) {
         console.error("Error in LoginFunc:", e);
       }

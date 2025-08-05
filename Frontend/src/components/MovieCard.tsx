@@ -20,7 +20,7 @@ const MovieCard = () => {
 
   useEffect(() => {
     const fetchMovies = async () => {
-      const response = await fetch("${process.env.REACT_APP_BACKEND_URL}/movies/poster");
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/movies/poster`);
       const data: MovieInterface[] = await response.json();
       setMovies(data);
     };

@@ -27,7 +27,7 @@ export const MovieDetails = () => {
   useEffect(() => {
     const loading_movie = async () => {
       try {
-        const data = await fetch(`${process.env.REACT_APP_BACKEND_URL}/movies/${id}`);
+        const data = await fetch(`${import.meta.env.VITE_BACKEND_URL}/movies/${id}`);
         const res: MovieInterface = await data.json();
         setData(res);
       } catch (error) {

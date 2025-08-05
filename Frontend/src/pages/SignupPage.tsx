@@ -20,7 +20,7 @@ function Signuppage() {
     }
 
     try {
-      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/users/signup`, {
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/users/signup`, {
         username,
         password,
       });
@@ -31,6 +31,8 @@ function Signuppage() {
       toast.error("Signup failed. Try again.");
     }
   }
+
+  
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-[#0F0F10] px-4">
