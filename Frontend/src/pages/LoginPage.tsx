@@ -30,7 +30,7 @@ const LoginPage: React.FC<LoginFuncProp> = ({ LoginFunc }) => {
 
     try {
       const response = await axios.post<LoginResponse>(
-        `http://localhost:3000/users/login`,
+        `${process.env.REACT_APP_BACKEND_URL}/users/login`,
         {
           username,
           password,

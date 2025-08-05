@@ -20,7 +20,7 @@ function Signuppage() {
     }
 
     try {
-      await axios.post(`http://localhost:3000/users/signup`, {
+      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/users/signup`, {
         username,
         password,
       });
