@@ -1,5 +1,5 @@
-import appStoreImg from "../assets/appStore.svg";
-import googlePlayImg from "../assets/googlePlay.svg";
+import appStoreImg from "/public/appStore.svg";
+import googlePlayImg from "/public/googlePlay.svg";
 
 
 const Footer = () => {

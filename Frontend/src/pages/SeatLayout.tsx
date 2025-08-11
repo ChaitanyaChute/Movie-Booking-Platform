@@ -1,5 +1,6 @@
 import React, { useState, type JSX } from "react";
-import screenImage from "../assets/screenImage.svg";
+import screenImage from "/public/screenImage.svg";
+
 import { toast } from "react-hot-toast"; 
 
 const rows: string[] = ["A", "B", "C", "D", "E", "F", "G"];

@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { assets } from "../assets/assets";
+import logo from "/public/logo.svg"
 import { Search, UserRound } from "lucide-react";
 import { useState } from "react";
 import ProfileComponent from "./ProfileComponent";
@@ -21,7 +21,7 @@ function profileFunction() {
     <div className="flex items-center justify-between fixed top-5 left-0 w-full pl-30 pr-40 font-light z-50">
       <div>
         <img
-          src={assets.logo}
+          src={logo}
           width={200}
           alt="Logo"
           className="cursor-pointer"

@@ -6,11 +6,12 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 
 const images = [
-  "./src/assets/carousal-1.jpg",
-  "./src/assets/carousal-2.jpg",
-  "./src/assets/carousal-3.jpg",
-  "./src/assets/carousal-4.jpg",
-  "./src/assets/carousal-5.jpg",
+  "/public/carousal-1.jpg",
+  "/public/carousal-2.jpg",
+  "/public/carousal-3.jpg",
+  "/public/carousal-4.jpg",
+  "/public/carousal-5.jpg",
+  
 ];
 
 
