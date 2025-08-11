@@ -74,7 +74,3 @@ A modern movie booking platform enabling users to browse movies, select theaters
 4. Deploy
 
 
-
----
-
-**Made with ❤️ by [Your Name]** | ⭐ Star this repo if helpful!
