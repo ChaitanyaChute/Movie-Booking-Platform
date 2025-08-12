@@ -14,16 +14,16 @@ A modern movie booking platform enabling users to browse movies, select theaters
 - **Secure Booking** - JWT authentication & secure payment processing
 - **User Dashboard** - Booking history and profile management
 - **Admin Panel** - Movie, theater, and booking management
-- **Responsive Design** - Optimized for all devices
+- 
 
 ## Tech Stack
 
-- **Frontend:** [Your Framework - React]
-- **Backend:** [Your Backend - Node.js]
-- **Database:** [Your DB - MongoDB]
+- **Frontend:** - React
+- **Backend:** - Node.js
+- **Database:** - MongoDB
 - **Deployment:** Render
 - **Authentication:** JWT
-- **Payments:** [Razorpay]
+- **Payments:** - Razorpay
 
 ## Quick Start
 
