@@ -44,10 +44,11 @@ Userrouter.post("/login" , async(req , res)=>{
         username 
     })
     
+    const passwordMatch = await bcrypt.compare(password,match!.password)
 
-    if(match){
+    if(passwordMatch){
         const token = jwt.sign({
-            id :match._id
+            id :match!._id
         },process.env.JWT_SECRET || "")
 
         res.status(200).json({
