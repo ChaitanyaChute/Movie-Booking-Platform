@@ -6,6 +6,8 @@ import Movierouter from "./routes/MovieRoute";
 import { dbconnect } from "./libs/Mongodb";
 import cors from "cors";
 import castRouter from "./routes/castRoute";
+import adminRouter from "./routes/adminRouter";
+import BookingRouter from "./routes/BookingRouter";
 
 dotenv.config();
 
@@ -19,6 +21,10 @@ const allowedOrigins = [
 ];
 
 const app = express();
+
+// Stripe webhook needs raw body, so add it before express.json()
+app.use("/bookings/webhook", express.raw({ type: "application/json" }), BookingRouter);
+
 app.use(express.json());
 app.use(cors({
   origin: function(origin, callback) {
@@ -37,6 +43,8 @@ app.use(cors({
 app.use("/users", Userrouter);
 app.use("/movies", Movierouter);
 app.use("/cast", castRouter);
+app.use("/admin",adminRouter);
+app.use("/bookings",BookingRouter);
 
 
 

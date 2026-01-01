@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,7 +9,26 @@ interface logoutfuncprops{
 
 const ProfileComponent: React.FC<logoutfuncprops>  = ({ logoutfunc }) => {
   const navigate = useNavigate();
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    // Check if user is admin
+    const userStr = localStorage.getItem("user");
+    if (userStr) {
+      try {
+        const user = JSON.parse(userStr);
+        setIsAdmin(user.isAdmin === true);
+      } catch (e) {
+        setIsAdmin(false);
+      }
+    }
+  }, []);
+
   const handleMyBookings = () => navigate('/bookings');
+  
+  const handleAdminMode = () => {
+    navigate('/admin', { state: { fromLogin: true } });
+  };
  
   const handleLogout = async() => {
     console.log('Logging out...');
@@ -38,6 +57,16 @@ const ProfileComponent: React.FC<logoutfuncprops>  = ({ logoutfunc }) => {
         >
           My Bookings
         </button>
+        
+        {isAdmin && (
+          <button
+            onClick={handleAdminMode}
+            className="w-full text-left text-gray-300 hover:bg-[#2A2A2B] px-4 py-2 rounded transition"
+          >
+            Admin Mode
+          </button>
+        )}
+
         <button
           onClick={handleLogout}
           className="w-full text-left text-[#EF3A55] hover:bg-[#2A2A2B] px-4 py-2 rounded font-semibold transition"

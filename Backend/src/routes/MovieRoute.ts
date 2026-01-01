@@ -1,11 +1,12 @@
 import express from "express";
 import movieModel from "../models/moviemodel";
 import cloudinary from "../libs/cloudinary";
+import { adminM } from "../middleware/admin";
 
 
 const Movierouter = express.Router();
 
-Movierouter.post("/upload"  ,async(req,res)=>{
+Movierouter.post("/upload",adminM , async(req,res)=>{
     const {moviename , overview , poster_path ,backdrop_path , genres , release_date , original_language , duration} = req.body;
 
     try {
@@ -87,3 +88,20 @@ Movierouter.get("/:id", async(req,res)=>{
     res.json(movie)
 })
 export default Movierouter;
+
+// Delete a movie (show) by ID (admin only)
+Movierouter.delete("/:id", adminM, async (req, res) => {
+    try {
+        const movieId = req.params.id;
+        const deleted = await movieModel.findByIdAndDelete(movieId);
+        if (!deleted) {
+            return res.status(404).json({ message: "Movie not found" });
+        }
+        res.json({ message: "Movie deleted successfully" });
+    } catch (error) {
+        console.error("Error deleting movie:", error);
+        res.status(500).json({ error: "Failed to delete movie" });
+    }
+});
+
+Movierouter.post

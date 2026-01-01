@@ -1,19 +1,64 @@
 import { Link } from "react-router";
 import logo from "/public/logo.svg"
 import { Search, UserRound } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import ProfileComponent from "./ProfileComponent";
 
-interface NavBarProps {
-  isLoggedIn: boolean;
-  logout: () => void;
-}
-
-const NavBar: React.FC<NavBarProps> = ({ isLoggedIn, logout }) => {
+const NavBar: React.FC = () => {
   const [dialogueBox, setDialogueBox] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const profileRef = useRef<HTMLDivElement>(null);
 
-function profileFunction() {
+  useEffect(() => {
+    // Check login status on mount and storage changes
+    const checkLoginStatus = () => {
+      const token = localStorage.getItem('token');
+      setIsLoggedIn(!!token);
+    };
+
+    checkLoginStatus();
+
+    // Listen for storage changes (handles login/logout in other tabs)
+    window.addEventListener('storage', checkLoginStatus);
+    
+    // Custom event for same-tab updates
+    window.addEventListener('authChange', checkLoginStatus);
+
+    return () => {
+      window.removeEventListener('storage', checkLoginStatus);
+      window.removeEventListener('authChange', checkLoginStatus);
+    };
+  }, []);
+
+  useEffect(() => {
+    // Close dropdown when clicking outside
+    const handleClickOutside = (event: MouseEvent) => {
+      if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
+        setDialogueBox(false);
+      }
+    };
+
+    if (dialogueBox) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [dialogueBox]);
+
+  function profileFunction() {
     setDialogueBox((prev) => !prev);
+  }
+
+  function logout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    setIsLoggedIn(false);
+    setDialogueBox(false);
+    // Dispatch custom event for navbar update
+    window.dispatchEvent(new Event('authChange'));
+    window.location.reload();
   }
 
 
@@ -30,6 +75,7 @@ function profileFunction() {
       <div className="border-2 px-5 py-3 rounded-full backdrop-blur bg-black-70/20 border-gray-300/20 flex gap-10 font-light text-sm cursor-pointer ">
         <Link to="/">Home </Link>
         <Link to="/movies">Movies</Link>
+        {/* {isLoggedIn && <Link to="/bookings">My Bookings</Link>} */}
         <Link to="*" >Theaters</Link>
         <Link to="*">Releases</Link>
       </div>
@@ -40,7 +86,7 @@ function profileFunction() {
         </div>
 
         {isLoggedIn ? (
-          <div>
+          <div ref={profileRef} className="relative">
             <button onClick={profileFunction} className="cursor-pointer">
               <UserRound />
             </button>

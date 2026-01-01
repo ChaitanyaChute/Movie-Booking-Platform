@@ -1,24 +1,23 @@
 import axios from "axios";
 import React, { useRef } from "react";
 import toast from "react-hot-toast";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface LoginResponse {
   token: string;
-  username: string;
-  password: string;
+  username?: string;
   isAdmin?: boolean;
 }
 
-const LoginPage: React.FC = () => {
+const AdminLogin: React.FC = () => {
   const navigate = useNavigate();
 
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
   async function Login() {
-    const username = usernameRef.current?.value;
-    const password = passwordRef.current?.value;
+    const username = usernameRef.current?.value?.trim();
+    const password = passwordRef.current?.value?.trim();
 
     if (!username || !password) {
       toast.error("Please enter both username and password");
@@ -26,26 +25,32 @@ const LoginPage: React.FC = () => {
     }
 
     try {
-      const response = await axios.post<LoginResponse>(
-        `${import.meta.env.VITE_BACKEND_URL}/users/login`,
+      const res = await axios.post<LoginResponse>(
+        `${import.meta.env.VITE_BACKEND_URL}/admin/login`,
+        { username, password },
         {
-          username,
-          password,
+          // enable only if backend uses cookies/sessions
+          withCredentials: true,
         }
       );
 
-      const token = response.data.token;
-      const isAdmin = response.data.isAdmin || false;
-      
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify({ username, isAdmin }));
+      // --- adjust here if backend shape is different ---
+      if (res.data?.token) {
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem(
+          "user",
+          JSON.stringify({ username: res.data.username ?? username, isAdmin: true })
+        );
 
-      // Notify navbar about auth change
-      window.dispatchEvent(new Event('authChange'));
+        // Notify navbar about auth change
+        window.dispatchEvent(new Event('authChange'));
 
-      toast.success("Logged in successfully!");
-      navigate("/");
-    } catch (error) {
+        toast.success("Logged in as Admin successfully!");
+        navigate("/admin", { state: { fromLogin: true } });
+      } else {
+        toast.error("Login failed. Invalid credentials.");
+      }
+    } catch (err) {
       toast.error("Login failed. Please check your credentials.");
     }
   }
@@ -54,7 +59,7 @@ const LoginPage: React.FC = () => {
     <div className="flex items-center justify-center min-h-screen bg-[#0F0F10] px-4">
       <div className="bg-[#1A1A1C] p-8 rounded-lg shadow-xl w-full max-w-sm border border-[#2a2a2b]">
         <h2 className="text-3xl font-bold text-white mb-6 text-center">
-          Welcome Back
+          Welcome Back Admin
         </h2>
 
         <div className="mb-4">
@@ -63,7 +68,7 @@ const LoginPage: React.FC = () => {
             ref={usernameRef}
             type="text"
             className="w-full px-4 py-2 bg-[#0F0F10] text-white border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-[#EF3A55] transition"
-            placeholder="Enter your username"
+            placeholder="Enter your Admin username"
           />
         </div>
 
@@ -83,19 +88,9 @@ const LoginPage: React.FC = () => {
         >
           Login
         </button>
-
-        <div className="mt-6 text-center text-sm text-gray-400">
-          Don&apos;t have an account?{" "}
-          <Link
-            to="/auth/s"
-            className="text-[#EF3A55] font-semibold hover:underline"
-          >
-            Create one
-          </Link>
-        </div>
       </div>
     </div>
   );
 };
 
-export default LoginPage;
+export default AdminLogin;

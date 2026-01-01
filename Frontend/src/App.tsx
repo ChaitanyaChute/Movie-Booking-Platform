@@ -1,4 +1,4 @@
-import { Routes, BrowserRouter, Route } from "react-router";
+import { Routes, BrowserRouter, Route, useLocation } from "react-router";
 import HomePage from "./pages/HomePage";
 import NavBar from "./components/NavBar";
 import Movies from "./pages/Movies";
@@ -12,49 +12,56 @@ import { Toaster } from "react-hot-toast";
 import LoginPage from "./pages/LoginPage";
 import Signuppage from "./pages/SignupPage";
 import AdminPage from "./pages/AdminPage";
-import { useState } from "react";
+import AdminLogin from "./pages/AdminLogin";
+import AdminDashboard from "./pages/AdminDashboard";
+import AddShow from "./pages/AddShow";
+import ListShows from "./pages/ListShows";
+import ListBookings from "./pages/ListBookings";
 
-
-const App = () => {
-  const [Profile, setProfile] = useState(false);
-
-  function LoginFunc() {
-    setProfile(true);
-  }
-
-  function logoutfunc() {
-    setProfile(false);
-  }
-
-  
+const AppContent = () => {
+  const location = useLocation();
+  const hideNavbar = location.pathname.startsWith('/admin');
 
   return (
     <>
-   
+      {!hideNavbar && <NavBar />}
 
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/movies" element={<Movies />} />
+        <Route path="/movies/:id" element={<MovieDetails />} />
+        <Route path="/movies/:id/:date" element={<SeatLayout />} />
+        <Route path="/bookings" element={<Bookings />} />
+        <Route path="/favorite" element={<Favorite />} />
+
+        <Route path="/auth" element={<LoginPage />} />
+        <Route path="/auth/s" element={<Signuppage />} />
+        
+        {/* Admin Routes */}
+        <Route path="/admin" element={<AdminPage />}>
+          <Route index element={<AdminDashboard />} />
+          <Route path="add" element={<AddShow />} />
+          <Route path="shows" element={<ListShows />} />
+          <Route path="bookings" element={<ListBookings />} />
+        </Route>
+        <Route path="/admin/login" element={<AdminLogin />} />
+
+        <Route path="*" element={<ErrorPage />} />
+      </Routes>
+
+      {!hideNavbar && <Footer />}
+    </>
+  );
+};
+
+const App = () => {
+  return (
+    <>
       <Toaster />
 
       <BrowserRouter>
-
-        <NavBar isLoggedIn={Profile} logout={logoutfunc} />
-
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/movies" element={<Movies />} />
-          <Route path="/movies/:id" element={<MovieDetails />} />
-          <Route path="/movies/:id/:date" element={<SeatLayout />} />
-          <Route path="/bookings" element={<Bookings />} />
-          <Route path="/favorite" element={<Favorite />} />
-
-          <Route path="/auth" element={<LoginPage LoginFunc={LoginFunc} />} />
-          <Route path="/auth/s" element={<Signuppage />} />
-
-          <Route path="*" element={<ErrorPage />} />
-          <Route path="/admin" element={<AdminPage />} />
-        </Routes>
+        <AppContent />
       </BrowserRouter>
-
-      <Footer />
     </>
   );
 };

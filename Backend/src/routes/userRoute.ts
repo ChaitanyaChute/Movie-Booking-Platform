@@ -12,10 +12,11 @@ Userrouter.post("/signup" , async(req:Request,res:Response)=>{
     
     interface userInput {
         username:string,
-        password:string
+        password:string,
+        isAdmin?:boolean
         
     }
-    const{username , password }=req.body as userInput;
+    const{username , password,isAdmin }=req.body as userInput;
 
     const existing = await userModel.findOne({username})
     try {
@@ -23,7 +24,8 @@ Userrouter.post("/signup" , async(req:Request,res:Response)=>{
 
     await userModel.create({
         username,
-        password:Hashedpass
+        password:Hashedpass,
+        isAdmin:isAdmin || false
     })
     res.json({
         message:"Account Created Sucessfully",
@@ -48,12 +50,14 @@ Userrouter.post("/login" , async(req , res)=>{
 
     if(passwordMatch){
         const token = jwt.sign({
-            id :match!._id
+            id :match!._id,
+            isAdmin: match!.isAdmin || false
         },process.env.JWT_SECRET || "")
 
         res.status(200).json({
             message:"You are Signed up sucessfully.",
-            token:token
+            token:token,
+            isAdmin: match!.isAdmin || false
         })
     }
     else{
@@ -62,5 +66,31 @@ Userrouter.post("/login" , async(req , res)=>{
         })
     }
 })
+
+// Verify user token and return user info including isAdmin status
+Userrouter.get("/verify", async(req, res) => {
+    try {
+        const token = req.headers.token as string;
+        
+        if (!token) {
+            return res.status(401).json({ message: "No token provided" });
+        }
+        
+        const decoded = jwt.verify(token, process.env.JWT_SECRET || "") as jwt.JwtPayload;
+        const user = await userModel.findById(decoded.id).select("-password");
+        
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        
+        res.status(200).json({
+            userId: user._id,
+            username: user.username,
+            isAdmin: user.isAdmin
+        });
+    } catch (error) {
+        res.status(403).json({ message: "Invalid or expired token" });
+    }
+});
 
 export default Userrouter;
