@@ -1,4 +1,4 @@
-import { Routes, BrowserRouter, Route, useLocation } from "react-router";
+import { Routes, HashRouter, Route, useLocation } from "react-router";
 import HomePage from "./pages/HomePage";
 import NavBar from "./components/NavBar";
 import Movies from "./pages/Movies";
@@ -59,9 +59,9 @@ const App = () => {
     <>
       <Toaster />
 
-      <BrowserRouter>
+      <HashRouter>
         <AppContent />
-      </BrowserRouter>
+      </HashRouter>
     </>
   );
 };
