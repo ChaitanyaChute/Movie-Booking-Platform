@@ -4,3 +4,7 @@ package-lock.json
 /env
 dist
 
+# Frontend environment files
+Frontend/.env
+Frontend/.env.*
+
