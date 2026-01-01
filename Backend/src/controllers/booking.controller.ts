@@ -34,6 +34,9 @@ export const createCheckoutSession = async (req: Request, res: Response) => {
       status: "pending",
     });
 
+    // Determine frontend base URL (prefer production if available)
+    const FRONTEND_BASE_URL = process.env.FRONTEND_PROD_URL || process.env.FRONTEND_URL;
+
     // Create Stripe checkout session
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
@@ -51,8 +54,8 @@ export const createCheckoutSession = async (req: Request, res: Response) => {
         },
       ],
       mode: "payment",
-      success_url: `${process.env.FRONTEND_URL}/bookings?success=true&bookingId=${booking._id}`,
-      cancel_url: `${process.env.FRONTEND_URL}/bookings?canceled=true`,
+      success_url: `${FRONTEND_BASE_URL}/bookings?success=true&bookingId=${booking._id}`,
+      cancel_url: `${FRONTEND_BASE_URL}/bookings?canceled=true`,
       metadata: {
         bookingId: booking._id.toString(),
         userId: userId.toString(),
