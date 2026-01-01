@@ -27,13 +27,20 @@ app.use("/bookings/webhook", express.raw({ type: "application/json" }), BookingR
 
 app.use(express.json());
 app.use(cors({
-  origin: function(origin, callback) {
-    if (!origin) return callback(null, true); 
-    if (allowedOrigins.indexOf(origin) === -1) {
-      return callback(new Error("CORS policy does not allow this origin"), false);
-    }
-    return callback(null, true);
-  },
+  origin: function (origin, callback) {
+  console.log("Request Origin:", origin);
+
+  if (!origin) return callback(null, true);
+
+  if (allowedOrigins.indexOf(origin) === -1) {
+    console.log(" Blocked by CORS:", origin);
+    return callback(new Error("CORS policy does not allow this origin"), false);
+  }
+
+  console.log(" CORS Allowed:", origin);
+  return callback(null, true);
+},
+
   credentials: true,
 }));
 
