@@ -57,7 +57,8 @@ const MyBookings: React.FC = () => {
       
       const token = localStorage.getItem('token');
       if (!token) {
-        setError("Please login to view bookings");
+        toast("Please login to view bookings");
+        navigate('/auth')
         setIsLoading(false);
         return;
       }
