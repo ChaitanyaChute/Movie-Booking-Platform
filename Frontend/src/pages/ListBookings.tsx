@@ -154,12 +154,8 @@ const ListBookings = () => {
                     {currency}{booking.amount}
                   </td>
                   <td className="px-6 py-4">
-                    <span className={`px-3 py-1 rounded-full text-sm ${
-                      booking.status === 'paid' ? 'bg-green-500/20 text-green-400' :
-                      booking.status === 'pending' ? 'bg-yellow-500/20 text-yellow-400' :
-                      'bg-red-500/20 text-red-400'
-                    }`}>
-                      {booking.status.toUpperCase()}
+                    <span className="px-3 py-1 rounded-full text-sm bg-green-500/20 text-green-400">
+                      PAID
                     </span>
                   </td>
                   <td className="px-6 py-4 text-gray-400 text-sm">

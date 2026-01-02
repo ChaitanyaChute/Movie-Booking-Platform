@@ -121,7 +121,7 @@ const MyBookings: React.FC = () => {
         <p className="text-gray-400">No bookings found</p>
       ) : (
         bookings.map((item) => {
-          const statusDisplay = item.status || 'paid';
+          const statusDisplay = 'paid';
           return (
           <div
             key={item._id}
