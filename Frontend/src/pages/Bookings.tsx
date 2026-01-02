@@ -36,9 +36,9 @@ const MyBookings: React.FC = () => {
     const bookingId = searchParams.get('bookingId');
     
     if (success === 'true' && bookingId) {
-      // Update booking status to paid
-      updateBookingStatus(bookingId);
+      // Booking is created as paid in backend, just refresh and show success
       toast.success("Payment successful! Your booking is confirmed.");
+      getMyBookings();
       // Remove query params from URL
       navigate('/bookings', { replace: true });
     } else if (canceled === 'true') {
@@ -46,24 +46,6 @@ const MyBookings: React.FC = () => {
       navigate('/bookings', { replace: true });
     }
   }, [searchParams, navigate]);
-
-  const updateBookingStatus = async (bookingId: string) => {
-    try {
-      await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/bookings/update-status/${bookingId}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ status: "paid" })
-        }
-      );
-      console.log('Booking status updated to paid');
-    } catch (error) {
-      console.error('Error updating booking status:', error);
-    }
-  };
 
   const getMyBookings = async () => {
     try {
@@ -135,7 +117,9 @@ const MyBookings: React.FC = () => {
       {bookings.length === 0 ? (
         <p className="text-gray-400">No bookings found</p>
       ) : (
-        bookings.map((item) => (
+        bookings.map((item) => {
+          const statusDisplay = item.status || 'paid';
+          return (
           <div
             key={item._id}
             className="flex flex-col md:flex-row justify-between  border border-[#EF3A55]/20 rounded-lg mt-4 p-4 max-w-3xl"
@@ -170,13 +154,13 @@ const MyBookings: React.FC = () => {
                   {currency}{item.amount}
                 </p>
                 <p className={`text-sm mt-2 px-3 py-1 rounded-full inline-block ${
-                  item.status === 'paid' ? 'bg-green-500/20 text-green-400' :
-                  item.status === 'pending' ? 'bg-yellow-500/20 text-yellow-400' :
+                  statusDisplay === 'paid' ? 'bg-green-500/20 text-green-400' :
+                  statusDisplay === 'paid' ? 'bg-green-500/20 text-green-400' :
                   'bg-red-500/20 text-red-400'
                 }`}>
-                  {item.status.toUpperCase()}
+                  {statusDisplay.toUpperCase()}
                 </p>
-                {item.status === 'paid' && (
+                {statusDisplay === 'paid' && (
                   <div className="mt-3">
                     <p className="text-xs text-gray-400 mb-1">🎟️ Ticket Confirmed</p>
                   </div>
@@ -187,7 +171,8 @@ const MyBookings: React.FC = () => {
               </p>
             </div>
           </div>
-        ))
+        );
+        })
       )}
     </div>
   );
