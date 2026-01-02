@@ -38,7 +38,10 @@ const MyBookings: React.FC = () => {
     if (success === 'true' && bookingId) {
       // Booking is created as paid in backend, just refresh and show success
       toast.success("Payment successful! Your booking is confirmed.");
-      getMyBookings();
+      // Add a small delay to ensure backend has processed the payment
+      setTimeout(() => {
+        getMyBookings();
+      }, 500);
       // Remove query params from URL
       navigate('/bookings', { replace: true });
     } else if (canceled === 'true') {
@@ -155,8 +158,8 @@ const MyBookings: React.FC = () => {
                 </p>
                 <p className={`text-sm mt-2 px-3 py-1 rounded-full inline-block ${
                   statusDisplay === 'paid' ? 'bg-green-500/20 text-green-400' :
-                  statusDisplay === 'paid' ? 'bg-green-500/20 text-green-400' :
-                  'bg-red-500/20 text-red-400'
+                  statusDisplay === 'cancelled' ? 'bg-red-500/20 text-red-400' :
+                  'bg-yellow-500/20 text-yellow-400'
                 }`}>
                   {statusDisplay.toUpperCase()}
                 </p>
